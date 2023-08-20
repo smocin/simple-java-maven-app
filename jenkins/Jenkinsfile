@@ -29,19 +29,19 @@ pipeline {
             }
             post {
                 always {
-                    junit '''
-                        export JAVA_HOME=/usr/lib/jvm/default-java
-                        export M2_HOME=/opt/maven
-                        export MAVEN_HOME=/opt/maven
-                        export PATH=${M2_HOME}/bin:${PATH}
-                        target/surefire-reports/*.xml
-                    '''
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                sh '''
+                    export JAVA_HOME=/usr/lib/jvm/default-java
+                    export M2_HOME=/opt/maven
+                    export MAVEN_HOME=/opt/maven
+                    export PATH=${M2_HOME}/bin:${PATH}
+                    ./jenkins/scripts/deliver.sh
+                '''
             }
         }
     }
